@@ -1,0 +1,19 @@
+.FormControls {
+  display: flex;
+  height: 100vh;
+
+  > section {
+    border: 1px solid #696969;
+    flex-grow: 1;
+    display: inherit;
+    margin: 0 10px;
+    justify-content: center;
+
+    form {
+      display: inherit;
+      height: fit-content;
+      flex-direction: column;
+      margin: 10px;
+    }
+  }
+}

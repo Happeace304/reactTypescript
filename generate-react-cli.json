@@ -10,6 +10,20 @@
       "withTest": false,
       "withStory": false,
       "withLazy": false
+    },
+    "base": {
+      "path": "src",
+      "withStyle": true,
+      "withTest": false,
+      "withStory": false,
+      "withLazy": false
+    },
+    "common": {
+      "path": "src",
+      "withStyle": true,
+      "withTest": false,
+      "withStory": false,
+      "withLazy": false
     }
   }
 }
