@@ -1,11 +1,11 @@
-import React from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import React from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import './App.scss'
-import Footer from './Footer/Footer'
-import Header from './Header/Header'
-import Main from './Main/Main'
-import FormControls from './FormControls/FormControls'
+import './App.scss';
+import Footer from './Footer/Footer';
+import Header from './Header/Header';
+import Main from './Main/Main';
+import FormControls from './FormControls/FormControls';
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
       </Main>
       <Footer />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
