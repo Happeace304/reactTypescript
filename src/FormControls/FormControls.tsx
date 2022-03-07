@@ -25,9 +25,7 @@ const FormControls: FC<FormControlsProps> = () => {
 
     console.log(data);
   };
-  const resetForm = () => {
-    dispatch(loadInitial());
-  };
+  const resetForm = () => dispatch(loadInitial());
   const onValueChange = ({
     target,
   }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
