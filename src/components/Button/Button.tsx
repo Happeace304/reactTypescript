@@ -3,10 +3,11 @@ import './Button.scss';
 
 interface ButtonProps {
   type?: 'submit' | 'button';
+  onClick?: () => void;
 }
 
 const Button: FC<ButtonProps> = ({ type, children, ...props }) => (
-  <button type={type} className="Button">
+  <button type={type} className="Button" {...props}>
     {children}
   </button>
 );

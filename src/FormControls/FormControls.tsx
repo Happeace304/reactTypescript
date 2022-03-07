@@ -1,29 +1,32 @@
-import React, { ChangeEvent, FC, FormEvent, useState } from 'react';
+import React, { ChangeEvent, FC, FormEvent } from 'react';
 
-import Textarea from '../components/Textarea/Textarea';
-import Legend from '../components/Legend/Legend';
-import Fieldset from '../components/Fieldset/Fieldset';
 import Button from '../components/Button/Button';
+import Fieldset from '../components/Fieldset/Fieldset';
 import Form from '../components/Form/Form';
 import Input from '../components/Input/Input';
+import Legend from '../components/Legend/Legend';
+import Textarea from '../components/Textarea/Textarea';
+import { loadInitial, updateData } from '../FormControls/formSlice';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { RootState } from '../store';
 import './FormControls.scss';
+
+import FormDataModel from './FormData.model';
 
 interface FormControlsProps {}
 
-const initialData = {
-  name: '',
-  password: '',
-  isMarried: false,
-  gender: '',
-  biography: '',
-};
-
 const FormControls: FC<FormControlsProps> = () => {
-  const [data, setData] = useState(initialData);
+  const data: FormDataModel = useAppSelector(
+    (state: RootState) => state.form.value,
+  );
+  const dispatch = useAppDispatch();
   const submitForm = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     console.log(data);
+  };
+  const resetForm = () => {
+    dispatch(loadInitial());
   };
   const onValueChange = ({
     target,
@@ -33,10 +36,11 @@ const FormControls: FC<FormControlsProps> = () => {
         ? (target as EventTarget & HTMLInputElement).checked
         : target.value;
 
-    setData({
-      ...data,
-      [target.name]: value,
-    });
+    dispatch(
+      updateData({
+        [target.name]: value,
+      }),
+    );
   };
 
   return (
@@ -91,6 +95,9 @@ const FormControls: FC<FormControlsProps> = () => {
               />
             </Fieldset>
             <Button type="submit">Submit</Button>
+            <Button type="button" onClick={resetForm}>
+              Reset
+            </Button>
           </div>
         </Form>
       </section>
