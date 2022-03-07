@@ -25,8 +25,13 @@ const FormControls: FC<FormControlsProps> = () => {
 
     console.log(data);
   };
-  const onValueChange = ({ target }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
-    const value = target.type === 'checkbox' ? (target as EventTarget & HTMLInputElement).checked : target.value;
+  const onValueChange = ({
+    target,
+  }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
+    const value =
+      target.type === 'checkbox'
+        ? (target as EventTarget & HTMLInputElement).checked
+        : target.value;
 
     setData({
       ...data,
@@ -61,9 +66,9 @@ const FormControls: FC<FormControlsProps> = () => {
                 type="checkbox"
                 checked={data.isMarried}
                 name="isMarried"
+                labelText="isMarried"
                 onChange={onValueChange}
               />
-              isMarried
             </div>
             <Fieldset>
               <Legend> Gender </Legend>
@@ -72,17 +77,18 @@ const FormControls: FC<FormControlsProps> = () => {
                 checked={data.gender === 'male'}
                 value="male"
                 name="gender"
+                labelText="Male"
                 onChange={onValueChange}
               />
-              Male
+
               <Input
                 type="radio"
                 checked={data.gender === 'female'}
                 value="female"
                 name="gender"
+                labelText="Female"
                 onChange={onValueChange}
               />
-              Female
             </Fieldset>
             <Button type="submit">Submit</Button>
           </div>
