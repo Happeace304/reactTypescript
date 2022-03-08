@@ -1,17 +1,16 @@
 import React, { ChangeEvent, FC, FormEvent } from 'react';
-
 import Button from '../components/Button/Button';
 import Fieldset from '../components/Fieldset/Fieldset';
 import Form from '../components/Form/Form';
 import Input from '../components/Input/Input';
 import Legend from '../components/Legend/Legend';
 import Textarea from '../components/Textarea/Textarea';
-import { loadInitial, updateData } from '../FormControls/formSlice';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { RootState } from '../store';
 import './FormControls.scss';
-
 import FormDataModel from './FormData.model';
+import { loadInitial, updateData } from './FormSlice';
+import { fetchData } from './FormThunk';
 
 interface FormControlsProps {}
 
@@ -26,6 +25,7 @@ const FormControls: FC<FormControlsProps> = () => {
     console.log(data);
   };
   const resetForm = () => dispatch(loadInitial());
+  const loadData = () => dispatch(fetchData());
   const onValueChange = ({
     target,
   }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
@@ -95,6 +95,9 @@ const FormControls: FC<FormControlsProps> = () => {
             <Button type="submit">Submit</Button>
             <Button type="button" onClick={resetForm}>
               Reset
+            </Button>
+            <Button type="button" onClick={loadData}>
+              Load data
             </Button>
           </div>
         </Form>
