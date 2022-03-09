@@ -1,16 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import FormDataModel from "../FormControls/FormData.model";
 import FormDataStoreModel from "./FormStoreData.model";
-import { fetchData } from "./FormThunk";
+import { fetchData, fetchDataById, postData } from "./FormThunk";
 
 const initialState: FormDataStoreModel ={
-  value: {
+  data: {
+    id: '',
     name: '',
     password: '',
     isMarried: false,
     gender: '',
     biography: '',
   },
+  list: [],
   state: 'idle',
 };
 
@@ -19,18 +21,24 @@ export const formSlice = createSlice({
   initialState: initialState,
   reducers: {
     loadInitial: (state) => {
-      state.value = initialState.value;
+      state.data = {...state.data,...initialState.data, id: ''};
     },
     updateData: (state, { payload }: PayloadAction<Partial<FormDataModel>>) => {
-      state.value = {...state.value, ...payload};
-    }
+      state.data = {...state.data, ...payload};
+    },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchData.pending, (state, action) => {
-      state.state = 'loading'
+    builder.addCase(postData.fulfilled, (state, action) => {
+      state.list = action.payload;
+      state.data = {...state.data,...initialState.data};
+      state.state = 'idle'
     })
     builder.addCase(fetchData.fulfilled, (state, action) => {
-      state.value = action.payload;
+      state.list = action.payload;
+      state.state = 'idle'
+    })
+    builder.addCase(fetchDataById.fulfilled, (state, action) => {
+      state.data = action.payload;
       state.state = 'idle'
     })
   }
