@@ -1,31 +1,35 @@
-import React, { ChangeEvent, FC, FormEvent } from 'react';
+import React, { ChangeEvent, FC, FormEvent, useEffect } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 import Button from '../components/Button/Button';
 import Fieldset from '../components/Fieldset/Fieldset';
 import Form from '../components/Form/Form';
 import Input from '../components/Input/Input';
 import Legend from '../components/Legend/Legend';
 import Textarea from '../components/Textarea/Textarea';
-import { useAppDispatch, useAppSelector } from '../hooks';
 import { RootState } from '../store';
 import './FormControls.scss';
 import FormDataModel from './FormData.model';
 import { loadInitial, updateData } from './FormSlice';
 import { fetchData } from './FormThunk';
 
-interface FormControlsProps {}
+interface FormControlsProps extends PropsFromRedux {
+  data: FormDataModel;
+}
 
-const FormControls: FC<FormControlsProps> = () => {
-  const data: FormDataModel = useAppSelector(
-    (state: RootState) => state.form.value,
-  );
-  const dispatch = useAppDispatch();
+const FormControls: FC<FormControlsProps> = ({
+  data,
+  resetForm,
+  loadData,
+  updateForm,
+}) => {
+  useEffect(() => {
+    loadData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const submitForm = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     console.log(data);
   };
-  const resetForm = () => dispatch(loadInitial());
-  const loadData = () => dispatch(fetchData());
   const onValueChange = ({
     target,
   }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
@@ -34,11 +38,9 @@ const FormControls: FC<FormControlsProps> = () => {
         ? (target as EventTarget & HTMLInputElement).checked
         : target.value;
 
-    dispatch(
-      updateData({
-        [target.name]: value,
-      }),
-    );
+    updateForm({
+      [target.name]: value,
+    });
   };
 
   return (
@@ -107,4 +109,13 @@ const FormControls: FC<FormControlsProps> = () => {
   );
 };
 
-export default FormControls;
+const mapStateToProps = ({ form }: RootState) => ({ data: form.value });
+const mapDispatchToProps = {
+  resetForm: () => loadInitial(),
+  loadData: () => fetchData(),
+  updateForm: (data: Partial<FormDataModel>) => updateData(data),
+};
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(FormControls);
